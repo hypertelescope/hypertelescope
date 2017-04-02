@@ -374,10 +374,10 @@
 					  values[2].toFixed(prec[2])];
 
 			$('#coord').val(values.join(' '));
-		}
 
-		refreshPreset();
-		update();
+		    refreshPreset();
+		    update();
+		}
 
 		if (userInput === 'pos') {
 			userInput = undefined;

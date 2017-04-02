@@ -1,15 +1,17 @@
 CACHE MANIFEST
-# 16/06/13 20:39
+# 02/04/17 19:40
 
 ./catenaryShape.html
 ./coordinates.html
 ./index.html
+./mesuresIGN.html
 ./mirrorLocation.html
 ./sphereLocation.html
 ./sphericalMirror.html
 ./img/C8icon.png
 ./img/cable.jpg
 ./img/coord.jpg
+./img/gps.jpg
 ./img/icon.jpg
 ./img/mirrors.jpg
 ./img/moutiere-1km-4096.jpg
@@ -20,9 +22,13 @@ CACHE MANIFEST
 ./script/base.js
 ./script/catenary.js
 ./script/Coordinates-ui.js
+./script/data-512.js
 ./script/data.js
 ./script/meridiens.js
+./script/mesuresIGN-ui.js
 ./script/mesuresIGN2010-mnt.js
+./script/mesuresSol2012.js
+./script/mesuresSol2013.js
 ./script/mirrorLocation.js
 ./script/mirrorLocations2013.js
 ./script/spherePresets.js
