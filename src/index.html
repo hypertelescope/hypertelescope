@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html manifest="carlina.appcache">
+  <head>
+	<meta charset="UTF-8" />
+	<title>Carlina</title>
+	<link type="text/css" rel="stylesheet"
+		  href="../../../jm/www/Build/dev/base.css" />
+	<link type="text/css" rel="stylesheet" href="style/carlina.css" />
+
+	<!-- For iOS  -->
+	<meta name="viewport"
+		  content="user-scalable=no, width=device-width,
+				   initial-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="img/icon.jpg" />
+
+	<!--
+	<link rel="apple-touch-startup-image" href="img/splash.png" />
+	-->
+  </head>
+
+  <body>
+	<div class="row">
+	  <div class="item center">
+		<a href="coordinates.html"><img src="img/coord.jpg"/></a>
+	  </div>
+	  <div class="item center">
+		<a href="mesuresIGN.html"><img src="img/gps.jpg"/></a>
+	  </div>
+	  <div class="item center">
+		<a href="mirrorLocation.html"><img src="img/mirrors.jpg"/></a>
+	  </div>
+	  <div class="item center">
+		<a href="sphereLocation.html"><img src="img/place.jpg"/></a>
+	  </div>
+	  <div class="item center">
+		<a href="sphericalMirror.html"><img src="img/optics.jpg"/></a>
+	  </div>
+	  <div class="item center">
+		<a href="catenaryShape.html"><img src="img/cable.jpg"/></a>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="item center">Coordinates
+	  </div>
+	  <div class="item center">GPS Measures
+	  </div>
+	  <div class="item center">Mirror Locations
+	  </div>
+	  <div class="item center">Sphere Location
+	  </div>
+	  <div class="item center">Spherical Mirror
+	  </div>
+	  <div class="item center">Cable Shape
+	  </div>
+	</div>
+
+	<hr/>
+	Built on <now/>
+	<script language="text/javascript">
+	  document.body.addEventListener('touchmove, function(e){ e.preventDefault(); });
+	  document.body.addEventListener('touchstart', function(e){ e.preventDefault(); });
+	</script>
+  </body>
+</html>

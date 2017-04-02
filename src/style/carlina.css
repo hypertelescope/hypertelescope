@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+
+body {
+	background-color:#001020;
+	color:#C0D0E0;
+	font-family:calibri;
+}
+
+h1 {
+	background-color:#102030;
+	font-size:150%;
+	color:#80C0E0;
+	font-weight:bold;
+}
+
+select, input {
+	background-color:#102030;
+	color:#C0D0E0;
+	border-color:#6080B0;
+	font-weight:bold;
+}
+
+/* All tables except layout class have a 1 pix border */
+table:not(.layout) {
+	border-collapse:collapse;
+}
+table:not(.layout) * td {
+	border:1px solid #506070;
+	padding-left:8px;
+	padding-right:8px;
+}
+
+.res {
+	width:120px
+}
+
+.warning {
+	padding:10px;
+	background-color: #A01020;
+	border-color: #801010;
+	color: white;
+}
+
+td.label {
+	width:400px;
+}

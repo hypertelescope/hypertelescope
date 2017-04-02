@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html manifest="carlina.appcache">
+  <head>
+	<meta charset="UTF-8" />
+	<title>Coordinate transformations</title>
+	<link type="text/css" rel="stylesheet"
+		  href="../../../jm/www/Build/dev/base.css" />
+	<script type="text/javascript"
+			src="../../../jm/www/Build/dev/base.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="style/carlina.css" />
+	<script type="text/javascript" src="script/Engine/Geometry.js"></script>
+	<script type="text/javascript" src="script/Engine/Draw.js"></script>
+	<script type="text/javascript" src="script/Engine/Coordinates.js"></script>
+	<script type="text/javascript" src="script/Coordinates-ui.js"></script>
+
+	<!-- For iOS  -->
+	<meta name="viewport"
+		  content="user-scalable=no, width=device-width,
+				   initial-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="img/coord.jpg" />
+
+	<!--
+	<link rel="apple-touch-startup-image" href="img/splash.png" />
+	-->
+
+  </head>
+  <body>
+	<h1>Input data:</h1>
+	<p>Choose the coordinate system and enter point coordinates separated
+	by white spaces.</p>
+
+	<input type="text" size="65" id="coord"/>
+
+	<select id="from-unit">
+	  <option value="UVA">Moutiere (m)</option>
+	  <option value="LLA">Lat Long Altitude</option>
+	  <option value="ENA">East North Altitude (m)</option>
+	  <option value="XYZ">Carthesian (m)</option>
+	</select>
+
+	Presets:
+	<select id="presets">
+	  <option value="-">-</option>
+	</select>
+
+	<input type="checkbox" class="boolean" checked="true" id="drawPresets"/>Display
+	presets
+
+	<h1>Conversion:</h1>
+
+	<table class="layout">
+	  <tr>
+		<td>
+		  <table width="0%">
+			<tr><td>Moutiere</td>
+			  <td align="right" class="res" id="UVA0"></td>
+			  <td align="right" class="res" id="UVA1"></td>
+			  <td align="right" class="res" id="UVA2"></td></tr>
+			<tr><td rowspan="2">Latitude Longitude Altitude</td>
+			  <td align="right" class="res" id="LLA1"></td>
+			  <td align="right" class="res" id="LLA0"></td>
+			  <td align="right" class="res" id="LLA2" rowspan="2"></td></tr>
+			<tr>
+			  <td align="right" class="res" id="LLA1b"></td>
+			  <td align="right" class="res" id="LLA0b"></td></tr>
+			<tr><td>East North Altitude</td>
+			  <td align="right" class="res" id="ENA0"></td>
+			  <td align="right" class="res" id="ENA1"></td>
+			  <td align="right" class="res" id="ENA2"></td></tr>
+			<tr><td>Carthesian (XYZ)</td>
+			  <td align="right" class="res" id="XYZ0"></td>
+			  <td align="right" class="res" id="XYZ1"></td>
+			  <td align="right" class="res" id="XYZ2"></td></tr>
+		  </table>
+		</td>
+		<td width="300px">
+		  <div class="warning" id="warning"><b>Warning:</b> The point is too
+			far from IGN reference point REF1. Calculations are not accurate.
+		  </div>
+		</td>
+	  </tr>
+	</table>
+
+	<table class="layout">
+	  <tr>
+		<td>
+		  <div style="width: 514px; height: 514px; position:relative">
+			<img src="img/moutiere-1km-512.jpg" id="map"
+				 style="z-index:0;
+						position:absolute; top:1px; left:1px;"/>
+			<canvas id="maplayer" width="5" height="5"
+					style="z-index:2; position:absolute; left:0px; top:0px;">
+			</canvas>
+		  </div>
+		</td>
+		<td>
+		  <div style="width: 514px; height: 514px; overflow: hidden;
+					  position: relative; background: #401020">
+			<img id="mapzoom" src="img/moutiere-1km-4096.jpg"
+				 style="position: absolute;"/>
+			<canvas id="mapzoomlayer" width="5" height="5"
+					style="z-index:2; position:absolute; left:0px; top:0px;">
+			</canvas>
+		  </div>
+		</td>
+	  </tr>
+	</table>
+
+	<!-- Add hidden sliders to connect values to manipulators -->
+	<div class="slider internal" id="posX"
+		 value="-133.520" min="-800" max="200"></div>
+	<div class="slider internal" id="posY"
+		 value="-42.064" min="-600" max="400" step="0.01"></div>
+
+  </body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html manifest="carlina.appcache">
+  <head>
+	<meta charset="UTF-8" />
+	<title>Spherical location</title>
+	<link type="text/css" rel="stylesheet"
+		  href="../../../jm/www/Build/dev/base.css" />
+	<script type="text/javascript"
+			src="../../../jm/www/Build/dev/base.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="style/carlina.css" />
+	<script type="text/javascript" src="script/Engine/Geometry.js"></script>
+	<script type="text/javascript" src="script/Engine/Draw.js"></script>
+	<script type="text/javascript" src="script/Engine/Coordinates.js"></script>
+	<script type="text/javascript" src="script/data-512.js"></script>
+	<script type="text/javascript" src="script/spherePresets.js"></script>
+	<script type="text/javascript" src="script/sphLocation.js"></script>
+
+	<!-- For iOS  -->
+	<meta name="viewport"
+		  content="user-scalable=no, width=device-width,
+				   initial-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="img/place.jpg" />
+
+	<!--
+	<link rel="apple-touch-startup-image" href="img/splash.png" />
+	-->
+  </head>
+  <body>
+
+	Presets:
+	<select id="presets">
+	</select>
+
+	<table class="layout">
+	  <tr>
+		<td>
+		  <div style="position:relative; width: 514px; height: 514px;">
+			<img src="img/moutiere-1km-512.jpg"
+				 style="z-index:0;
+						position:absolute; top:1px; left:1px;"/>
+			<canvas id="map" width="50" height="50"
+					style="z-index:1;
+						   position:absolute; left:1px; top:1px;"></canvas>
+			<canvas id="maplayer" width="50" height="50"
+					style="z-index:2;
+						   position:absolute; left:0px; top:0px;"></canvas>
+		  </div>
+		</td>
+
+		<td>
+		  <div style="width: 514px; height: 514px; overflow: hidden;
+					  position: relative; background: #401020">
+			<img id="mapzoom" src="img/moutiere-1km-4096.jpg"
+				 style="z-index:0; position: absolute;"/>
+			<canvas id="mapzoomlayer" width="5" height="5"
+					style="z-index:1;position:absolute;left:0px;top:0px;"></canvas>
+			<canvas id="mapzoomlayertop" width="5" height="5"
+					style="z-index:2;position:absolute;left:0px;top:0px;"></canvas>
+		  </div>
+		</td>
+	  </tr>
+
+	  <tr>
+		<td align="center">
+		  <div class="scale" id="ground-scale"
+			   style="width: 512px; height: 24px;"
+			   min="2000" max="2100"
+			   data='0, "#40FFFF", 1, "#0000FF"'>
+		  </div>
+		</td>
+
+		<td align="center">
+		  <div class="scale" id="tele-scale" style="width: 512px; height: 24px;"
+			   min="-2.5" max="2.5"
+			   data='0.0, "#000000", 0.5, "#ff0000",
+			   0.5, "#000000", 0.6, "#ffff00",
+			   0.6, "#000000", 0.7, "#00ff00",
+			   0.7, "#000000", 0.8, "#00ff00",
+			   0.8, "#000000", 0.9, "#00ff00",
+			   0.9, "#000000", 1.0, "#ffffff"' >
+		  </div>
+		</td>
+	  </tr>
+	</table>
+
+	<table class="layout">
+	  <tr>
+		<td width="150px" style="text-align:right"><b>C1 Center</b> :</td>
+		<td width="150px" style="text-align:right">U :</td>
+		<td id="C1-U"> - </td>
+		<td width="150px" style="text-align:right">V :</td>
+		<td id="C1-V"> - </td>
+		<td width="150px" style="text-align:right">Alt :</td>
+		<td id="C1-A"> - </td>
+	  </tr>
+	  <tr>
+		<td width="150px" style="text-align:right"><b>North mirror</b> :</td>
+		<td width="150px" style="text-align:right">Elevation :</td>
+		<td id="MirN-Z"> - </td>
+		<td width="150px" style="text-align:right">Sphere elevation :</td>
+		<td id="MirN-sphZ"> - </td>
+		<td width="150px" style="text-align:right">Difference :</td>
+		<td id="MirN-diff"> - </td>
+	  </tr>
+	  <tr>
+		<td width="150px" style="text-align:right"><b>South mirror</b> :</td>
+		<td width="150px" style="text-align:right">Elevation :</td>
+		<td id="MirS-Z"> - </td>
+		<td width="150px" style="text-align:right">Sphere elevation :</td>
+		<td id="MirS-sphZ"> - </td>
+		<td width="150px" style="text-align:right">Difference :</td>
+		<td id="MirS-diff"> - </td>
+	  </tr>
+	  <tr>
+		<td width="150px" style="text-align:right"><b>Probe</b> :</td>
+		<td width="150px" style="text-align:right">Elevation :</td>
+		<td id="probe-Z"> - </td>
+		<td width="150px" style="text-align:right">Sphere elevation :</td>
+		<td id="probe-sphZ"> - </td>
+		<td width="150px" style="text-align:right">Difference :</td>
+		<td id="probe-diff"> - </td>
+	  </tr>
+	</table>
+
+	<div class="tabs">
+	  <div class="tab" title="Sphere">
+
+		<div class="slider" id="posX"
+			 label="U position"
+			 value="-133.520" min="-800" max="200" step="0.1"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="posY"
+			 label="V position"
+			 value="-42.064" min="-600" max="400" step="0.1"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="radius"
+			 label="Sphere Radius"
+			 value="202" min="100" max="300" step="0.1"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="groundRadius"
+			 label="Ground Radius"
+			 value="30" min="20" max="60" step="0.1"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="zOffset"
+			 label="Vertical Offset"
+			 value="0" min="-10" max="10" step="0.01"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<input type="checkbox" class="boolean" id="alignC8" checked="1"/>
+		Align with C8
+	  </div>
+
+	  <div class="tab" title="Mirrors">
+		<div class="slider" id="cursX"
+			 label="Elevation probe U"
+			 value="-133.520" min="-800" max="200" step="0.01"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="cursY"
+			 label="Elevation probe V"
+			 value="-42.064" min="-600" max="400" step="0.01"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+	  </div>
+
+	  <div class="tab" title="Display">
+
+		<div class="slider" id="allowedH"
+			 label="Max allowed height"
+			 value="2.5" min=".5" max="10" step="0.1"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="transp2"
+			 label="Sphere Transp."
+			 value=".5" min="0" max="1" step="0.001"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="transp"
+			 label="Elevation Transp."
+			 value=".5" min="0" max="1" step="0.001"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		Display:
+		<input type="checkbox" class="boolean" id="drawIGN1"/> IGN1
+		<input type="checkbox" class="boolean" id="drawC1"/> C1
+		<input type="checkbox" class="boolean" id="drawC8"/> C8
+		<input type="checkbox" class="boolean" id="drawMirN" checked='1' /> North Mirror
+		<input type="checkbox" class="boolean" id="drawMirS" checked='1' /> South Mirror
+
+	  </div>
+	</div>
+
+	<div class="todo">
+	  <li>BUG: Elevation map may be offset by 1 pixel?</li>
+	  <li>BUG: Elevation map: BIL and 2010 data dont match</li>
+	  <li>Verifier l'altitude de qq points (REF1...) pour verifier le
+	  calage sur la photo et les coordonees </li>
+	  <li>SUG: tracer la trajectoire de Vega et Deneb </li>
+	  <li>SUG: Ajout de l'echele dans les images</li>
+	</div>
+  </body>
+</html>

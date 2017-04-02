@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html manifest="carlina.appcache">
+  <head>
+	<meta charset="UTF-8" />
+	<title>Spherical mirror</title>
+	<link type="text/css" rel="stylesheet"
+		  href="../../../jm/www/Build/dev/base.css" />
+	<script type="text/javascript"
+			src="../../../jm/www/Build/dev/base.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="style/carlina.css" />
+	<script type="text/javascript" src="script/Engine/Geometry.js"></script>
+	<script type="text/javascript" src="script/Engine/Draw.js"></script>
+	<script type="text/javascript" src="script/sphMirror.js"></script>
+
+	<!-- For iOS  -->
+	<meta name="viewport"
+		  content="user-scalable=no, width=device-width,
+				   initial-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="img/optics.jpg" />
+
+	<!--
+	<link rel="apple-touch-startup-image" href="img/splash.png" />
+	-->
+  </head>
+  <body>
+
+	<canvas id="schema" width="750" height="500"></canvas>
+
+	<div class="tabs">
+	  <div class="tab" title="Geometry">
+
+		<div class="slider" id="starDir"
+			 label="Star direction"
+			 value="0" min="-25" max="25" step="0.01"
+			 showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="aperture"
+			 label="Aperture"
+			 value="30" min="5" max="202"
+			 showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="numMirror"
+			 label="Number of mirrors"
+			 value="1" min="1" max="60"
+			 showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="mirrorDensity"
+			 label="Mirror density"
+			 value="1" min="0.001" max="1" step="0.01"
+			 showMin="1" showMax="1" showValue="1"></div>
+
+		<div id="shape">
+		  Shape: 
+		  <input type="radio" class="boolean" id="spherical" name="shape" checked="checked"/>
+		  <label for="spherical">spherical</label>
+		  <input type="radio" class="boolean" id="parabolic" name="shape"/>
+		  <label for="parabolic">parabolic</label>
+		</div>
+
+	  </div>
+	  <div class="tab" title="Display">
+
+		<div class="slider" id="nbRays"
+			 label="Number of rays"
+			 value="10" min="1" max="60"
+			 showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="length"
+			 label="Wavefront distance"
+			 value="0" min="0" max="3" step="0.001"
+			 showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="zoom"
+			 label="Zoom factor"
+			 value="20" min="1" max="40" step="0.01"
+			 showMin="1" showMax="1" showValue="1"></div>
+
+		<p>
+		  <input type="checkbox" checked="true" class="boolean" 
+		  id="drawFocal"/> Display focal point.
+		  <div class="internal">
+			<input type="checkbox" class="boolean" id="legend"/>Display legend
+		  </div>
+		</p>
+	  </div>
+	</div>
+
+	<p class="internal">Resolution:
+	  <select id="res">
+		<option value="PAL">PAL (768 x 576)</option>
+		<option value="HD">HD720 (1280 x 720)</option>
+		<option value="FullHD">Full HD (1920 x 1080)</option>
+	  </select>
+	</p>
+
+  </body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html manifest="carlina.appcache">
+  <head>
+	<meta charset="UTF-8" />
+	<title>Spherical location</title>
+	<link type="text/css" rel="stylesheet"
+		  href="../../../jm/www/Build/dev/base.css" />
+	<script type="text/javascript"
+			src="../../../jm/www/Build/dev/base.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="style/carlina.css" />
+	<script type="text/javascript" src="script/Engine/Geometry.js"></script>
+	<script type="text/javascript" src="script/Engine/Draw.js"></script>
+	<script type="text/javascript" src="script/Engine/Coordinates.js"></script>
+	<script type="text/javascript" src="script/data-512.js"></script>
+	<script type="text/javascript" src="script/spherePresets.js"></script>
+	<script type="text/javascript" src="script/mesuresIGN2010-mnt.js"></script>
+	<script type="text/javascript" src="script/mirrorLocations2013.js"></script>
+	<script type="text/javascript" src="script/mirrorLocation.js"></script>
+
+	<!-- For iOS  -->
+	<meta name="viewport"
+		  content="user-scalable=no, width=device-width,
+				   initial-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="img/place.jpg" />
+
+	<!--
+	<link rel="apple-touch-startup-image" href="img/splash.png" />
+	-->
+  </head>
+  <body>
+
+	<table class="layout">
+	  <tr>
+		<td>
+		  <div style="width: 512px; height: 512px; overflow: hidden;
+					  position: relative; background: #401020">
+			<img id="mapzoom" src="img/moutiere-1km-4096.jpg"
+				 style="z-index:0; position: absolute;"/>
+			<canvas id="mapzoomlayer" width="5" height="5"
+					style="z-index:1;position:absolute;left:0px;top:0px;"></canvas>
+			<canvas id="mapzoomlayertop" width="5" height="5"
+					style="z-index:2;position:absolute;left:0px;top:0px;"></canvas>
+		  </div>
+		</td>
+		<td>
+
+		  <h3>Fixed data:</h3>
+		  <table width="100%">
+			<tr>
+			  <td align="right">C1 Center</td>
+			  <td align="right" id="C1-U"> - </td>
+			  <td align="right" id="C1-V"> - </td>
+			  <td align="right" id="C1-A"> - </td>
+			</tr>
+		  </table>
+
+		  <h3>Input point:</h3>
+		  <table width="100%">
+			<tr><td align="right">East North Altitude</td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="ENA0"
+					   min="1000341" max="1000461"
+					   size="8" numberFormat="n3" step=".01" />
+			  </td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="ENA1"
+					   min="6364790" max="6364921"
+					   size="8" numberFormat="n3" step=".01" />
+			  </td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="ENA2"
+					   min="2000" max="2100"
+					   size="8" numberFormat="n3" step=".01" />
+			</td></tr>
+			<tr><td align="right">Moutiere</td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="UVA0"
+					   min="-175" max="-50"
+					   size="8" numberFormat="n3" step=".1" />
+			  </td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="UVA1"
+					   min="-115" max="10"
+					   size="8" numberFormat="n3" step=".1" />
+			  </td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="UVA2"
+					   min="2000" max="2100"
+					   size="8" numberFormat="n3" step=".01" />
+			</td></tr>
+		  </table>
+
+		  <button class="JQbutton" id="SaveProbe"
+				  title="Save the current position
+of the probe">Save Probe</button>
+		  <button class="JQbutton" id="DumpProbes"
+				  title="Shows all probes in the console">Dump Probes</button>
+
+		  <h3>Auxiliary point:</h3>
+		  <table width="100%">
+			<tr><td align="right">East North Altitude</td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="ENAb0"
+					   min="1000341" max="1000461"
+					   size="8" numberFormat="n3" step=".01" />
+			  </td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="ENAb1"
+					   min="6364790" max="6364921"
+					   size="8" numberFormat="n3" step=".01" />
+			  </td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="ENAb2"
+					   min="2000" max="2100"
+					   size="8" numberFormat="n3" step=".01" />
+			</td></tr>
+			<tr><td align="right">Moutiere</td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="UVAb0"
+					   min="-175" max="-50"
+					   size="8" numberFormat="n3" step=".1" />
+			  </td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="UVAb1"
+					   min="-115" max="10"
+					   size="8" numberFormat="n3" step=".1" />
+			  </td>
+			  <td align="right" class="res">
+				<input class="JQspinner" id="UVAb2"
+					   min="2000" max="2100"
+					   size="8" numberFormat="n3" step=".01" />
+			</td></tr>
+			<tr><td align="right">Distance</td>
+			  <td align="right" id="distance2"> - </td>
+			  <td align="right" id="distance3"> - </td>
+			</tr>
+		  </table>
+
+		  <h3>Calculations:</h3>
+		  <table width="100%">
+			<tr>
+			  <td></td>
+			  <td align="center">Altitude</td>
+			  <td align="center">Sphere Alt</td>
+			  <td align="center">Difference</td>
+			</tr>
+			<tr>
+			  <td align="right">North mirror</td>
+			  <td align="right" id="MirN-Z"> - </td>
+			  <td align="right" id="MirN-sphZ"> - </td>
+			  <td align="right" id="MirN-diff"> - </td>
+			</tr>
+			<tr>
+			  <td align="right">South mirror</td>
+			  <td align="right" id="MirS-Z"> - </td>
+			  <td align="right" id="MirS-sphZ"> - </td>
+			  <td align="right" id="MirS-diff"> - </td>
+			</tr>
+			<tr>
+			  <td align="right"><b>Probe (mesures 2010)</b></td>
+			  <td align="right"><b id="probe2010-Z"> - </b></td>
+			  <td align="right"><b id="probe2010-sphZ"> - </b></td>
+			  <td align="right"><b id="probe2010-diff"> - </b></td>
+			</tr>
+			<tr>
+			  <td align="right"><b>Probe (input)</b></td>
+			  <td align="right"><b id="probe-Z"> - </b></td>
+			  <td align="right"><b id="probe-sphZ"> - </b></td>
+			  <td align="right"><b id="probe-diff"> - </b></td>
+			</tr>
+		  </table>
+		</td>
+	  </tr>
+
+	  <tr>
+		<td align="center">
+		  <div class="scale" id="tele-scale" style="width: 512px; height: 24px;"
+			   min="-2.5" max="2.5"
+			   data='0.0, "#000000", 0.5, "#ff0000",
+			   0.5, "#000000", 0.6, "#ffff00",
+			   0.6, "#000000", 0.7, "#00ff00",
+			   0.7, "#000000", 0.8, "#00ff00",
+			   0.8, "#000000", 0.9, "#00ff00",
+			   0.9, "#000000", 1.0, "#ffffff"' >
+		  </div>
+		</td>
+	  </tr>
+	</table>
+
+
+
+	<div class="tabs">
+
+	  <div class="tab" title="Display">
+
+		<div class="slider" id="allowedH"
+			 label="Max allowed height"
+			 value="2.5" min=".5" max="10" step="0.1"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		<div class="slider" id="transp2"
+			 label="Sphere Transp."
+			 value=".5" min="0" max="1" step="0.001"
+			 anim="true" showMin="1" showMax="1" showValue="1"></div>
+
+		Display:
+		<input type="checkbox" class="boolean" id="drawC1"/> C1
+		<input type="checkbox" class="boolean" id="drawMirN" 
+			   checked='1' /> North Mirror
+		<input type="checkbox" class="boolean" id="drawMirS"
+			   checked='1' /> South Mirror
+		<input type="checkbox" class="boolean" id="drawIGN"
+			   checked='1' /> 2010 measures
+		<input type="checkbox" class="boolean" id="drawProbes"
+			   checked='1' /> Rencent measures
+
+	  </div>
+	</div>
+
+	<div class="todo">
+	  <li>SUG: tracer la trajectoire de Vega et Deneb </li>
+	  <li>SUG: Ajout de l'echele dans les images</li>
+	</div>
+  </body>
+</html>
